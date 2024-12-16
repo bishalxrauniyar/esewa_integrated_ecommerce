@@ -9,7 +9,7 @@ $success_url = "http://localhost/bishalcommerce/payment_success.php";
 $fail_url = "http://localhost/bishalcommerce/payment_fail.php";
 $secret_key = '8gBm/:&EnhH.1/q';
 
-// Generate unique transaction ID
+// Generate unique transactionn ID
 $transaction_uuid = uniqid('ESEWA_') . '_' . time();
 $product_code = "EPAYTEST";
 

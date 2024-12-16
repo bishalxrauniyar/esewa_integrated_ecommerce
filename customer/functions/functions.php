@@ -1,34 +1,39 @@
 <?php
 
-$db = mysqli_connect("localhost","root","","ecom_store");
+$db = mysqli_connect("localhost", "root", "", "ecom_store");
 
 /// IP address code starts /////
-function getRealUserIp(){
-    switch(true){
-      case (!empty($_SERVER['HTTP_X_REAL_IP'])) : return $_SERVER['HTTP_X_REAL_IP'];
-      case (!empty($_SERVER['HTTP_CLIENT_IP'])) : return $_SERVER['HTTP_CLIENT_IP'];
-      case (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) : return $_SERVER['HTTP_X_FORWARDED_FOR'];
-      default : return $_SERVER['REMOTE_ADDR'];
-    }
- }
+function getRealUserIp()
+{
+  switch (true) {
+    case (!empty($_SERVER['HTTP_X_REAL_IP'])):
+      return $_SERVER['HTTP_X_REAL_IP'];
+    case (!empty($_SERVER['HTTP_CLIENT_IP'])):
+      return $_SERVER['HTTP_CLIENT_IP'];
+    case (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])):
+      return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    default:
+      return $_SERVER['REMOTE_ADDR'];
+  }
+}
 /// IP address code Ends /////
 
 // items function Starts ///
 
-function items(){
+function items()
+{
 
-global $db;
+  global $db;
 
-$ip_add = getRealUserIp();
+  $ip_add = getRealUserIp();
 
-$get_items = "select * from cart where ip_add='$ip_add'";
+  $get_items = "select * from cart where ip_add='$ip_add'";
 
-$run_items = mysqli_query($db,$get_items);
+  $run_items = mysqli_query($db, $get_items);
 
-$count_items = mysqli_num_rows($run_items);
+  $count_items = mysqli_num_rows($run_items);
 
-echo $count_items;
-
+  echo $count_items;
 }
 
 
@@ -36,48 +41,39 @@ echo $count_items;
 
 // total_price function Starts //
 
-function total_price(){
+function total_amount()
+{
 
-global $db;
+  global $db;
 
-$ip_add = getRealUserIp();
+  $ip_add = getRealUserIp();
 
-$total = 0;
+  $total = 0;
 
-$select_cart = "select * from cart where ip_add='$ip_add'";
+  $select_cart = "select * from cart where ip_add='$ip_add'";
 
-$run_cart = mysqli_query($db,$select_cart);
+  $run_cart = mysqli_query($db, $select_cart);
 
-while($record=mysqli_fetch_array($run_cart)){
+  while ($record = mysqli_fetch_array($run_cart)) {
 
-$pro_id = $record['p_id'];
+    $pro_id = $record['p_id'];
 
-$pro_qty = $record['qty'];
+    $pro_qty = $record['qty'];
 
-$get_price = "select * from products where product_id='$pro_id'";
+    $get_price = "select * from products where product_id='$pro_id'";
 
-$run_price = mysqli_query($db,$get_price);
+    $run_price = mysqli_query($db, $get_price);
 
-while($row_price=mysqli_fetch_array($run_price)){
-
-
-$sub_total = $row_price['product_price']*$pro_qty;
-
-$total += $sub_total;
+    while ($row_price = mysqli_fetch_array($run_price)) {
 
 
+      $sub_total = $row_price['product_price'] * $pro_qty;
 
-}
+      $total += $sub_total;
+    }
+  }
 
-
-
-
-
-}
-
-echo "Rupee" . $total;
-
-
+  echo "Rupee" . $total;
 }
 
 
@@ -85,25 +81,26 @@ echo "Rupee" . $total;
 // total_price function Ends //
 
 
-function getPro(){
+function getPro()
+{
 
-global $db;
+  global $db;
 
-$get_products = "select * from products order by 1 DESC LIMIT 0,8";
+  $get_products = "select * from products order by 1 DESC LIMIT 0,8";
 
-$run_products = mysqli_query($db,$get_products);
+  $run_products = mysqli_query($db, $get_products);
 
-while($row_products=mysqli_fetch_array($run_products)){
+  while ($row_products = mysqli_fetch_array($run_products)) {
 
-$pro_id = $row_products['product_id'];
+    $pro_id = $row_products['product_id'];
 
-$pro_title = $row_products['product_title'];
+    $pro_title = $row_products['product_title'];
 
-$pro_price = $row_products['product_price'];
+    $pro_price = $row_products['product_price'];
 
-$pro_img1 = $row_products['product_img1'];
+    $pro_img1 = $row_products['product_img1'];
 
-echo "
+    echo "
 
 <div class='col-md-4 col-sm-6 single' >
 
@@ -142,14 +139,5 @@ echo "
 </div>
 
 ";
-
-
-
-
+  }
 }
-
-
-}
-
-
-?>
